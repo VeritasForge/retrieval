@@ -14,7 +14,7 @@ class CreateCategory {
     Uuid? uuid,
   }) : uuid = uuid ?? const Uuid();
 
-  Future<Category> call(String name) async {
+  Future<Category> call(String name, String iconName, String colorHex) async {
     if (name.trim().isEmpty) {
       throw const ValidationException('카테고리 이름은 비어있을 수 없습니다.');
     }
@@ -22,6 +22,8 @@ class CreateCategory {
     final category = Category.create(
       id: uuid.v4(),
       name: name.trim(),
+      iconName: iconName,
+      colorHex: colorHex,
     );
 
     return repository.create(category);

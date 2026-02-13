@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'features/category/presentation/pages/category_page.dart';
-import 'features/review/presentation/pages/home_page.dart';
-import 'features/study_item/presentation/pages/add_study_item_page.dart';
+import 'core/theme/app_theme.dart';
+import 'features/shell/presentation/pages/shell_page.dart';
 
 class RetrievalApp extends StatelessWidget {
   const RetrievalApp({super.key});
@@ -10,32 +9,11 @@ class RetrievalApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '복습 관리',
+      title: "Jay's Garden",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-        ),
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-        ),
-      ),
-      themeMode: ThemeMode.system,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const HomePage(),
-        '/categories': (context) => const CategoryPage(),
-        '/add-study': (context) => const AddStudyItemPage(),
-      },
+      theme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
+      home: const ShellPage(),
     );
   }
 }

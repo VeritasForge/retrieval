@@ -6,20 +6,20 @@ user-invocable: true
 
 # Dev-Review Cycle Orchestrator
 
-사용자 요구사항을 받아 `flutter-developer` (생산) + `code-reviewer` (검증) 에이전트를 오케스트레이션한다.
+사용자 요구사항을 받아 'flutter-developer' (생산) + 'code-reviewer' (검증) 에이전트를 오케스트레이션한다.
 메인 대화가 **Judge** 역할을 수행하며, 증거 기반으로 최종 판정한다.
 
 ## 사용법
 
-```
+~~~
 /dev-review-cycle <요구사항>
-```
+~~~
 
 ## 프로토콜 (4 Round)
 
 사용자 요구사항을 인자로 받으면, 아래 4개 라운드를 순차 실행한다.
 **최대 반복: 3회** (무한루프 방지)
-**조기 종료 조건**: CRITICAL 0개 + `flutter test` 통과 + `flutter analyze` 통과
+**조기 종료 조건**: CRITICAL 0개 + 'flutter test' 통과 + 'flutter analyze' 통과
 
 ---
 
@@ -38,9 +38,9 @@ sequential-thinking MCP를 사용하여 다음을 수행한다:
 
 ### Round 1: 개발 (flutter-developer)
 
-Task tool을 사용하여 `flutter-developer` 에이전트를 호출한다.
+Task tool을 사용하여 'flutter-developer' 에이전트를 호출한다.
 
-```
+~~~
 Task(
   subagent_type: "flutter-developer",
   prompt: """
@@ -57,7 +57,7 @@ Task(
 
   ### 지시사항
   - TDD Red-Green-Refactor를 엄격히 따른다
-  - 구현 완료 후 `flutter test`와 `flutter analyze`를 실행한다
+  - 구현 완료 후 'flutter test'와 'flutter analyze'를 실행한다
   - 완료 후 아래 형식으로 500토큰 이내 요약을 반환한다:
 
   ## 구현 요약
@@ -68,7 +68,7 @@ Task(
   - 핵심 설계 결정: [주요 결정 사항]
   """
 )
-```
+~~~
 
 **Round 1 완료 후**: 에이전트 요약을 저장하고 Round 2로 진행한다.
 
@@ -76,9 +76,9 @@ Task(
 
 ### Round 2: 독립 리뷰 (code-reviewer)
 
-Task tool을 사용하여 `code-reviewer` 에이전트를 호출한다.
+Task tool을 사용하여 'code-reviewer' 에이전트를 호출한다.
 
-```
+~~~
 Task(
   subagent_type: "code-reviewer",
   prompt: """
@@ -94,7 +94,7 @@ Task(
   - 위 변경 파일들을 모두 읽고 8가지 관점에서 리뷰한다
   - **반드시 1개 이상의 개선점을 식별한다** (아무리 잘 작성된 코드라도 개선할 부분은 있다)
   - 칭찬만 하지 않는다. 구체적인 개선 포인트를 반드시 제시한다
-  - `flutter test`와 `flutter analyze` 결과를 확인한다
+  - 'flutter test'와 'flutter analyze' 결과를 확인한다
   - 완료 후 아래 형식으로 500토큰 이내 요약을 반환한다:
 
   ## 리뷰 결과
@@ -117,7 +117,7 @@ Task(
   - 권장 사항: [Approve / Approve with fixes / Request changes]
   """
 )
-```
+~~~
 
 **Sycophancy 방지**: "반드시 1개 이상 개선점 식별" 지시로 리뷰어가 무조건 승인하는 것을 방지한다.
 
@@ -140,7 +140,7 @@ Task(
 
 #### 판정 후 분기
 
-```
+~~~
 if (AGREED인 CRITICAL 항목 존재):
     → Round 1로 복귀 (수정 지시 포함)
     → 반복 횟수 +1
@@ -153,11 +153,11 @@ elif (AGREED인 WARNING 항목 존재):
 elif (SUGGESTION만 존재):
     → 사용자에게 리뷰 결과 보고
     → 완료
-```
+~~~
 
 #### 판정 보고 형식
 
-```markdown
+~~~markdown
 ## Judge 판정 결과
 
 ### Round N/3
@@ -173,7 +173,7 @@ elif (SUGGESTION만 존재):
 
 ### 다음 행동
 - [ ] Round 1 재실행 / 완료
-```
+~~~
 
 ---
 
@@ -181,7 +181,7 @@ elif (SUGGESTION만 존재):
 
 모든 라운드 완료 후 사용자에게 최종 보고한다:
 
-```markdown
+~~~markdown
 ## Dev-Review Cycle 완료
 
 ### 요구사항
@@ -203,7 +203,7 @@ elif (SUGGESTION만 존재):
 
 ### DISAGREED 항목 (참고)
 - [항목] Judge 판단 사유: ...
-```
+~~~
 
 ## 제약사항
 

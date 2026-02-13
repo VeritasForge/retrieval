@@ -1,32 +1,43 @@
 import 'package:equatable/equatable.dart';
 
-import 'sub_category.dart';
-
-/// 대분류 카테고리 엔티티
+/// 카테고리 엔티티
 class Category extends Equatable {
   final String id;
   final String name;
-  final List<SubCategory> subCategories;
+  final String iconName;
+  final String colorHex;
+  final bool isDefault;
   final DateTime createdAt;
+  final int order;
 
   const Category({
     required this.id,
     required this.name,
-    required this.subCategories,
+    required this.iconName,
+    required this.colorHex,
+    this.isDefault = false,
     required this.createdAt,
+    this.order = 0,
   });
 
-  /// 새 카테고리 생성 (빈 소분류 목록)
+  /// 새 카테고리 생성
   factory Category.create({
     required String id,
     required String name,
+    required String iconName,
+    required String colorHex,
+    bool isDefault = false,
     DateTime? createdAt,
+    int order = 0,
   }) {
     return Category(
       id: id,
       name: name,
-      subCategories: const [],
+      iconName: iconName,
+      colorHex: colorHex,
+      isDefault: isDefault,
       createdAt: createdAt ?? DateTime.now(),
+      order: order,
     );
   }
 
@@ -34,41 +45,24 @@ class Category extends Equatable {
   Category copyWith({
     String? id,
     String? name,
-    List<SubCategory>? subCategories,
+    String? iconName,
+    String? colorHex,
+    bool? isDefault,
     DateTime? createdAt,
+    int? order,
   }) {
     return Category(
       id: id ?? this.id,
       name: name ?? this.name,
-      subCategories: subCategories ?? this.subCategories,
+      iconName: iconName ?? this.iconName,
+      colorHex: colorHex ?? this.colorHex,
+      isDefault: isDefault ?? this.isDefault,
       createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
-  /// 소분류 추가
-  Category addSubCategory(SubCategory subCategory) {
-    return copyWith(
-      subCategories: [...subCategories, subCategory],
-    );
-  }
-
-  /// 소분류 제거
-  Category removeSubCategory(String subCategoryId) {
-    return copyWith(
-      subCategories:
-          subCategories.where((sc) => sc.id != subCategoryId).toList(),
-    );
-  }
-
-  /// 소분류 업데이트
-  Category updateSubCategory(SubCategory updatedSubCategory) {
-    return copyWith(
-      subCategories: subCategories.map((sc) {
-        return sc.id == updatedSubCategory.id ? updatedSubCategory : sc;
-      }).toList(),
+      order: order ?? this.order,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, subCategories, createdAt];
+  List<Object?> get props =>
+      [id, name, iconName, colorHex, isDefault, createdAt, order];
 }

@@ -21,7 +21,7 @@ Robert C. Martin의 Clean Code 원칙을 Dart/Flutter에 맞게 적용한다.
 - 약어를 피하고 완전한 단어를 사용한다
 - 검색 가능한 이름을 사용한다
 
-```dart
+~~~dart
 // Good
 final daysUntilNextReview = calculateDaysRemaining(nextReviewDate);
 final isReviewOverdue = daysUntilNextReview < 0;
@@ -31,19 +31,19 @@ final overdueReviews = reviews.where((r) => r.isOverdue).toList();
 final d = calc(nrd);
 final flag = d < 0;
 final list = reviews.where((r) => r.f).toList();
-```
+~~~
 
 ### 클래스와 메서드 네이밍 규칙
-- **클래스명**: 명사/명사구 (`ReviewScheduler`, `SpacedRepetitionCalculator`)
-- **메서드명**: 동사/동사구 (`calculateNextReview`, `markAsCompleted`)
-- **Bool 변수/getter**: `is`, `has`, `can`, `should` 접두사 (`isCompleted`, `hasReviews`)
-- **팩토리 메서드**: `create`, `from`, `of` 접두사
-- **변환 메서드**: `to` 접두사 (`toJson`, `toEntity`)
+- **클래스명**: 명사/명사구 ('ReviewScheduler', 'SpacedRepetitionCalculator')
+- **메서드명**: 동사/동사구 ('calculateNextReview', 'markAsCompleted')
+- **Bool 변수/getter**: 'is', 'has', 'can', 'should' 접두사 ('isCompleted', 'hasReviews')
+- **팩토리 메서드**: 'create', 'from', 'of' 접두사
+- **변환 메서드**: 'to' 접두사 ('toJson', 'toEntity')
 
 ### 일관성
 - 한 개념에 하나의 단어만 사용한다
-- `fetch`, `get`, `retrieve` 중 하나만 선택하여 프로젝트 전체에서 일관되게 사용한다
-- `Controller`, `Manager`, `Handler` 중 하나만 선택한다
+- 'fetch', 'get', 'retrieve' 중 하나만 선택하여 프로젝트 전체에서 일관되게 사용한다
+- 'Controller', 'Manager', 'Handler' 중 하나만 선택한다
 
 ## 함수
 
@@ -58,7 +58,7 @@ final list = reviews.where((r) => r.f).toList();
 - boolean 파라미터 대신 별도 함수를 만든다
 - Named parameter를 적극 활용한다
 
-```dart
+~~~dart
 // Good
 void scheduleReview({
   required String reviewId,
@@ -68,13 +68,13 @@ void scheduleReview({
 
 // Bad
 void scheduleReview(String id, DateTime d, bool urgent, bool notify, int p) { ... }
-```
+~~~
 
 ### 부수 효과 없는 함수
 - 함수 이름이 암시하지 않는 부수 효과를 만들지 않는다
 - Query와 Command를 분리한다 (CQS - Command Query Separation)
 
-```dart
+~~~dart
 // Good - Query (부수 효과 없음)
 List<Review> getOverdueReviews() => _reviews.where((r) => r.isOverdue).toList();
 
@@ -89,7 +89,7 @@ List<Review> getOverdueReviews() {
   _lastAccessedAt = DateTime.now(); // 숨겨진 부수 효과
   return _reviews.where((r) => r.isOverdue).toList();
 }
-```
+~~~
 
 ## 클래스
 
@@ -104,7 +104,7 @@ List<Review> getOverdueReviews() {
 
 ### 캡슐화
 - 구현 세부사항을 숨기고 인터페이스만 노출한다
-- `_` private을 적극 활용한다
+- '_' private을 적극 활용한다
 - getter/setter보다 의미 있는 메서드를 제공한다
 
 ## 주석
@@ -118,9 +118,9 @@ List<Review> getOverdueReviews() {
 - 코드를 반복하는 주석
 - 주석 처리된 코드 (삭제한다)
 - 이력 주석 (git이 관리한다)
-- 닫는 괄호 주석 (`// end if`, `// end for`)
+- 닫는 괄호 주석 ('// end if', '// end for')
 
-```dart
+~~~dart
 // Good - 왜 이런 결정을 했는지 설명
 // 에빙하우스 망각곡선에 따르면 첫 번째 복습은 24시간 이내가 최적이다.
 // 하지만 사용자 피드백을 반영하여 1일 후로 설정했다.
@@ -129,7 +129,7 @@ const firstReviewInterval = Duration(days: 1);
 // Bad - 코드를 반복하는 주석
 // 리뷰 목록을 가져온다
 final reviews = getReviews();
-```
+~~~
 
 ## 에러 처리
 
@@ -138,7 +138,7 @@ final reviews = getReviews();
 - 예외에 충분한 컨텍스트 정보를 포함한다
 - 외부 라이브러리 예외는 래핑하여 사용한다
 
-```dart
+~~~dart
 // Good - 커스텀 예외 with 컨텍스트
 class ReviewNotFoundException implements Exception {
   final String reviewId;
@@ -147,11 +147,11 @@ class ReviewNotFoundException implements Exception {
   @override
   String toString() => 'Review not found: $reviewId';
 }
-```
+~~~
 
 ## 포맷팅
 
-- `dart format` 자동 포맷팅을 사용한다
+- 'dart format' 자동 포맷팅을 사용한다
 - 한 줄은 80자 이하를 권장한다
 - 관련 코드는 그룹으로 묶고, 그룹 사이에 빈 줄을 넣는다
 - 수직 거리: 관련 함수는 가까이 배치한다

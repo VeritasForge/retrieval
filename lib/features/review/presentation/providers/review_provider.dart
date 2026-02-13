@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:retrieval/features/strategy/presentation/providers/strategy_provider.dart';
+import 'package:retrieval/features/task/presentation/providers/task_provider.dart';
 import '../../data/datasources/review_schedule_local_datasource.dart';
-import '../../data/models/review_schedule_model.dart';
+import '../../data/models/review_schedule_model_v2.dart';
 import '../../data/repositories/review_schedule_repository_impl.dart';
 import '../../domain/entities/review_schedule.dart';
 import '../../domain/repositories/review_schedule_repository.dart';
@@ -11,7 +13,7 @@ import '../../domain/usecases/create_review_schedules.dart';
 import '../../domain/usecases/get_today_reviews.dart';
 
 /// Hive Box Provider
-final reviewScheduleBoxProvider = Provider<Box<ReviewScheduleModel>>((ref) {
+final reviewScheduleBoxProvider = Provider<Box<ReviewScheduleModelV2>>((ref) {
   throw UnimplementedError('reviewScheduleBoxProvider must be overridden');
 });
 
@@ -30,10 +32,10 @@ final reviewScheduleRepositoryProvider =
 });
 
 /// UseCase Providers
-final createReviewSchedulesUseCaseProvider =
-    Provider<CreateReviewSchedules>((ref) {
+final createNextReviewScheduleUseCaseProvider =
+    Provider<CreateNextReviewSchedule>((ref) {
   final repository = ref.watch(reviewScheduleRepositoryProvider);
-  return CreateReviewSchedules(repository: repository);
+  return CreateNextReviewSchedule(repository: repository);
 });
 
 final getTodayReviewsUseCaseProvider = Provider<GetTodayReviews>((ref) {
@@ -48,7 +50,13 @@ final getPendingReviewsUseCaseProvider = Provider<GetPendingReviews>((ref) {
 
 final completeReviewUseCaseProvider = Provider<CompleteReview>((ref) {
   final repository = ref.watch(reviewScheduleRepositoryProvider);
-  return CompleteReview(repository: repository);
+  final taskRepository = ref.watch(taskRepositoryProvider);
+  final strategyRepository = ref.watch(strategyRepositoryProvider);
+  return CompleteReview(
+    repository: repository,
+    taskRepository: taskRepository,
+    strategyRepository: strategyRepository,
+  );
 });
 
 final uncompleteReviewUseCaseProvider = Provider<UncompleteReview>((ref) {

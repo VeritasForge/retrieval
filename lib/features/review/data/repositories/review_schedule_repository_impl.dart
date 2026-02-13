@@ -1,7 +1,7 @@
 import '../../domain/entities/review_schedule.dart';
 import '../../domain/repositories/review_schedule_repository.dart';
 import '../datasources/review_schedule_local_datasource.dart';
-import '../models/review_schedule_model.dart';
+import '../models/review_schedule_model_v2.dart';
 
 class ReviewScheduleRepositoryImpl implements ReviewScheduleRepository {
   final ReviewScheduleLocalDataSource localDataSource;
@@ -21,8 +21,8 @@ class ReviewScheduleRepositoryImpl implements ReviewScheduleRepository {
   }
 
   @override
-  Future<List<ReviewSchedule>> getByStudyItemId(String studyItemId) async {
-    final models = await localDataSource.getByStudyItemId(studyItemId);
+  Future<List<ReviewSchedule>> getByTaskId(String taskId) async {
+    final models = await localDataSource.getByTaskId(taskId);
     return models.map((m) => m.toEntity()).toList();
   }
 
@@ -52,22 +52,28 @@ class ReviewScheduleRepositoryImpl implements ReviewScheduleRepository {
   }
 
   @override
+  Future<List<ReviewSchedule>> getCompletedTodaySchedules() async {
+    final models = await localDataSource.getCompletedTodaySchedules();
+    return models.map((m) => m.toEntity()).toList();
+  }
+
+  @override
   Future<ReviewSchedule> create(ReviewSchedule schedule) async {
-    final model = ReviewScheduleModel.fromEntity(schedule);
+    final model = ReviewScheduleModelV2.fromEntity(schedule);
     await localDataSource.save(model);
     return schedule;
   }
 
   @override
   Future<List<ReviewSchedule>> createMany(List<ReviewSchedule> schedules) async {
-    final models = schedules.map((s) => ReviewScheduleModel.fromEntity(s)).toList();
+    final models = schedules.map((s) => ReviewScheduleModelV2.fromEntity(s)).toList();
     await localDataSource.saveMany(models);
     return schedules;
   }
 
   @override
   Future<ReviewSchedule> update(ReviewSchedule schedule) async {
-    final model = ReviewScheduleModel.fromEntity(schedule);
+    final model = ReviewScheduleModelV2.fromEntity(schedule);
     await localDataSource.save(model);
     return schedule;
   }
@@ -78,7 +84,7 @@ class ReviewScheduleRepositoryImpl implements ReviewScheduleRepository {
   }
 
   @override
-  Future<void> deleteByStudyItemId(String studyItemId) async {
-    await localDataSource.deleteByStudyItemId(studyItemId);
+  Future<void> deleteByTaskId(String taskId) async {
+    await localDataSource.deleteByTaskId(taskId);
   }
 }

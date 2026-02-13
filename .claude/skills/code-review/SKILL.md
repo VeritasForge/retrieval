@@ -21,48 +21,48 @@ user-invocable: false
 ### 1. Dart Idiomatic 검사
 
 - [ ] Effective Dart 네이밍 컨벤션을 따르는가?
-- [ ] `final`/`const`를 적절히 사용했는가?
-- [ ] Null safety를 올바르게 활용하는가? (`!` 남용 없는가?)
-- [ ] `late` 변수 사용이 안전한가?
+- [ ] 'final'/'const'를 적절히 사용했는가?
+- [ ] Null safety를 올바르게 활용하는가? ('!' 남용 없는가?)
+- [ ] 'late' 변수 사용이 안전한가?
 - [ ] Dart 3+ 패턴 (sealed class, pattern matching, records)을 활용할 기회가 있는가?
-- [ ] cascade (`..`) 연산자를 활용할 수 있는 곳이 있는가?
+- [ ] cascade ('..') 연산자를 활용할 수 있는 곳이 있는가?
 - [ ] import 순서가 올바른가? (dart → package → relative)
-- [ ] 비동기 코드에서 `async`/`await`를 적절히 사용하는가?
+- [ ] 비동기 코드에서 'async'/'await'를 적절히 사용하는가?
 - [ ] Stream subscription을 올바르게 해제하는가?
 - [ ] 에러 처리가 구체적인 예외 타입을 사용하는가?
 
 ### 2. Flutter 패턴 검사
 
-- [ ] `const` constructor를 사용할 수 있는 곳에서 사용했는가?
-- [ ] `setState()` 호출이 최소화되어 있는가?
-- [ ] `SizedBox`를 적절히 사용했는가? (불필요한 `Container` 사용 없는가?)
-- [ ] Widget의 `build()` 메서드가 과도하게 길지 않은가? (50줄 이하 권장)
-- [ ] `dispose()`에서 모든 리소스를 해제하는가?
-- [ ] `Theme.of(context)`를 사용하는가? (하드코딩 스타일 없는가?)
-- [ ] `ListView.builder()`를 사용하는가? (긴 리스트에 `ListView` 직접 사용 금지)
+- [ ] 'const' constructor를 사용할 수 있는 곳에서 사용했는가?
+- [ ] 'setState()' 호출이 최소화되어 있는가?
+- [ ] 'SizedBox'를 적절히 사용했는가? (불필요한 'Container' 사용 없는가?)
+- [ ] Widget의 'build()' 메서드가 과도하게 길지 않은가? (50줄 이하 권장)
+- [ ] 'dispose()'에서 모든 리소스를 해제하는가?
+- [ ] 'Theme.of(context)'를 사용하는가? (하드코딩 스타일 없는가?)
+- [ ] 'ListView.builder()'를 사용하는가? (긴 리스트에 'ListView' 직접 사용 금지)
 - [ ] 상태 관리(Riverpod)를 올바르게 사용하는가?
-  - `ref.watch()`는 `build()` 내에서만 사용하는가?
-  - `ref.read()`는 이벤트 핸들러에서만 사용하는가?
-- [ ] `AsyncValue.when()`으로 loading/error/data를 모두 처리하는가?
+  - 'ref.watch()'는 'build()' 내에서만 사용하는가?
+  - 'ref.read()'는 이벤트 핸들러에서만 사용하는가?
+- [ ] 'AsyncValue.when()'으로 loading/error/data를 모두 처리하는가?
 - [ ] 접근성(Semantics)을 고려했는가?
 
 ### 3. TDD 검사
 
 - [ ] **모든 프로덕션 코드에 대응하는 테스트가 존재하는가?**
 - [ ] 테스트가 의미 있는 동작을 검증하는가? (구현 세부사항 테스트가 아닌가?)
-- [ ] 테스트 이름이 명확한가? (`should_behavior_when_condition`)
+- [ ] 테스트 이름이 명확한가? ('should_behavior_when_condition')
 - [ ] AAA 패턴 (Arrange-Act-Assert)을 따르는가?
 - [ ] 각 테스트가 독립적인가? (다른 테스트에 의존하지 않는가?)
 - [ ] Edge case를 테스트하는가? (빈 리스트, null, 경계값)
 - [ ] Mock이 올바르게 사용되는가? (테스트 대상만 실제 인스턴스)
-- [ ] `test/` 구조가 `lib/` 구조를 미러링하는가?
+- [ ] 'test/' 구조가 'lib/' 구조를 미러링하는가?
 
 ### 4. OOP 검사
 
 - [ ] 캡슐화가 올바르게 적용되는가? (불필요한 public 멤버 없는가?)
 - [ ] 상속 계층이 적절한가? (깊은 상속 대신 조합 사용)
 - [ ] 다형성을 활용할 기회를 놓치지 않았는가?
-- [ ] 타입 체크(`is`)를 다형적 메서드 호출로 대체할 수 있는가?
+- [ ] 타입 체크('is')를 다형적 메서드 호출로 대체할 수 있는가?
 - [ ] 불변 객체를 적절히 활용하는가?
 
 ### 5. SOLID 검사
@@ -99,7 +99,7 @@ user-invocable: false
 - [ ] 주석 처리된 코드가 남아있지 않는가?
 - [ ] 함수 파라미터가 3개를 넘지 않는가?
 - [ ] 들여쓰기가 2단계를 넘지 않는가?
-- [ ] `dart format` 포맷팅이 적용되어 있는가?
+- [ ] 'dart format' 포맷팅이 적용되어 있는가?
 
 ### 9. 성능 검사
 
@@ -112,13 +112,13 @@ user-invocable: false
 ### 10. 보안 검사 (기본)
 
 - [ ] API 키나 시크릿이 코드에 하드코딩되지 않았는가?
-- [ ] 민감 데이터가 `flutter_secure_storage`를 사용하는가?
+- [ ] 민감 데이터가 'flutter_secure_storage'를 사용하는가?
 - [ ] 사용자 입력이 검증되는가?
 - [ ] 로그에 민감 정보가 출력되지 않는가?
 
 ## 리뷰 출력 형식
 
-```markdown
+~~~markdown
 ## Code Review Result
 
 ### CRITICAL
@@ -142,7 +142,7 @@ user-invocable: false
 - WARNING: N건
 - SUGGESTION: N건
 - 전체 품질: [Excellent / Good / Needs Improvement / Poor]
-```
+~~~
 
 ## 리뷰 원칙
 

@@ -6,13 +6,13 @@ void main() {
     test('create should create a new schedule with isCompleted false', () {
       final schedule = ReviewSchedule.create(
         id: 'schedule-1',
-        studyItemId: 'study-1',
+        taskId: 'task-1',
         scheduledDate: DateTime(2024, 1, 16),
         reviewOrder: 1,
       );
 
       expect(schedule.id, 'schedule-1');
-      expect(schedule.studyItemId, 'study-1');
+      expect(schedule.taskId, 'task-1');
       expect(schedule.scheduledDate, DateTime(2024, 1, 16));
       expect(schedule.reviewOrder, 1);
       expect(schedule.isCompleted, isFalse);
@@ -22,7 +22,7 @@ void main() {
     test('complete should mark schedule as completed', () {
       final schedule = ReviewSchedule.create(
         id: 'schedule-1',
-        studyItemId: 'study-1',
+        taskId: 'task-1',
         scheduledDate: DateTime(2024, 1, 16),
         reviewOrder: 1,
       );
@@ -36,7 +36,7 @@ void main() {
     test('uncomplete should mark schedule as not completed', () {
       final schedule = ReviewSchedule(
         id: 'schedule-1',
-        studyItemId: 'study-1',
+        taskId: 'task-1',
         scheduledDate: DateTime(2024, 1, 16),
         reviewOrder: 1,
         isCompleted: true,
@@ -54,7 +54,7 @@ void main() {
       final now = DateTime.now();
       final schedule1 = ReviewSchedule(
         id: 'schedule-1',
-        studyItemId: 'study-1',
+        taskId: 'task-1',
         scheduledDate: DateTime(2024, 1, 16),
         reviewOrder: 1,
         isCompleted: false,
@@ -63,7 +63,7 @@ void main() {
       );
       final schedule2 = ReviewSchedule(
         id: 'schedule-1',
-        studyItemId: 'study-1',
+        taskId: 'task-1',
         scheduledDate: DateTime(2024, 1, 16),
         reviewOrder: 1,
         isCompleted: false,

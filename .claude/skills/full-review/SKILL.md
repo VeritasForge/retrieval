@@ -6,15 +6,15 @@ user-invocable: true
 
 # Full Review Orchestrator
 
-기존 코드베이스를 `code-reviewer` (검증) + `flutter-developer` (수정) 에이전트로 **리뷰→판정→수정** 순서로 오케스트레이션한다.
+기존 코드베이스를 'code-reviewer' (검증) + 'flutter-developer' (수정) 에이전트로 **리뷰→판정→수정** 순서로 오케스트레이션한다.
 메인 대화가 **Judge** 역할을 수행하며, 증거 기반으로 최종 판정한다.
 
 ## 사용법
 
-```
+~~~
 /full-review           # 전체 feature 리뷰
 /full-review <feature> # 단일 feature 리뷰 (예: /full-review category)
-```
+~~~
 
 ## dev-review-cycle과의 차이
 
@@ -39,7 +39,7 @@ feature 단위로 Round 1~3을 반복 실행한다.
 sequential-thinking MCP를 사용하여 다음을 수행한다:
 
 1. 인자 파싱: 전체 리뷰 vs 단일 feature
-2. Glob으로 `lib/features/*/` 및 `lib/core/`, `lib/app.dart` 파일 목록 수집
+2. Glob으로 'lib/features/*/' 및 'lib/core/', 'lib/app.dart' 파일 목록 수집
 3. feature별 배치 계획 수립 (priority 순)
 
 **배치 우선순위**:
@@ -59,9 +59,9 @@ sequential-thinking MCP를 사용하여 다음을 수행한다:
 
 ### Round 1: Feature 리뷰 (code-reviewer)
 
-Task tool을 사용하여 `code-reviewer` 에이전트를 호출한다. **feature별로 반복 실행.**
+Task tool을 사용하여 'code-reviewer' 에이전트를 호출한다. **feature별로 반복 실행.**
 
-```
+~~~
 Task(
   subagent_type: "code-reviewer",
   prompt: """
@@ -105,7 +105,7 @@ Task(
   - 전체 품질: [Excellent / Good / Needs Improvement / Poor]
   """
 )
-```
+~~~
 
 **Sycophancy 방지**: "반드시 1개 이상 개선점 식별" 지시로 리뷰어가 무조건 승인하는 것을 방지한다.
 
@@ -131,7 +131,7 @@ Task(
 
 #### 판정 후 분기
 
-```
+~~~
 if (AGREED인 CRITICAL 항목 존재):
     → MUST_FIX → Round 3으로 진행
     → 반복 횟수 +1
@@ -142,11 +142,11 @@ elif (AGREED인 WARNING 다수 존재):
 
 elif (SUGGESTION만 존재):
     → 사용자에게 보고 후 다음 feature로 진행
-```
+~~~
 
 #### 판정 보고 형식
 
-```markdown
+~~~markdown
 ## Judge 판정 결과: {feature_name}
 
 ### AGREED (수정 진행)
@@ -160,7 +160,7 @@ elif (SUGGESTION만 존재):
 
 ### 다음 행동
 - MUST_FIX / SHOULD_FIX / REPORT_ONLY
-```
+~~~
 
 ---
 
@@ -168,7 +168,7 @@ elif (SUGGESTION만 존재):
 
 MUST_FIX 또는 SHOULD_FIX 판정 시에만 실행한다.
 
-```
+~~~
 Task(
   subagent_type: "flutter-developer",
   prompt: """
@@ -186,7 +186,7 @@ Task(
   ### 지시사항
   - AGREED 항목만 수정한다
   - 기존 동작을 변경하지 않으면서 코드 품질을 개선한다
-  - 수정 완료 후 `flutter test`와 `flutter analyze`를 실행한다
+  - 수정 완료 후 'flutter test'와 'flutter analyze'를 실행한다
   - 완료 후 아래 형식으로 500토큰 이내 요약을 반환한다:
 
   ## 수정 요약: {feature_name}
@@ -196,11 +196,11 @@ Task(
   - 분석 결과: [clean/issues, 이슈 시 상세]
   """
 )
-```
+~~~
 
 **수정 후 재검토**: 수정 완료 후 code-reviewer 에이전트로 **수정 파일만** 재검토한다.
 
-```
+~~~
 Task(
   subagent_type: "code-reviewer",
   prompt: """
@@ -220,7 +220,7 @@ Task(
   - 500토큰 이내 요약을 반환한다
   """
 )
-```
+~~~
 
 재검토에서 새 CRITICAL 발견 시 → Judge 판정 → 수정 반복 (feature당 최대 2회)
 
@@ -228,7 +228,7 @@ Task(
 
 ## Feature별 처리 흐름
 
-```
+~~~
 FOR EACH feature IN batch_plan (priority 순):
   round_count = 0
 
@@ -246,7 +246,7 @@ FOR EACH feature IN batch_plan (priority 순):
 → flutter test 실행 (전체)
 → flutter analyze 실행 (전체)
 → 종료 보고
-```
+~~~
 
 ---
 
@@ -254,7 +254,7 @@ FOR EACH feature IN batch_plan (priority 순):
 
 모든 feature 처리 완료 후 최종 보고한다:
 
-```markdown
+~~~markdown
 ## Full Review Report
 
 ### 요약
@@ -277,12 +277,12 @@ FOR EACH feature IN batch_plan (priority 순):
 
 ### 미해결 항목 (수동 조치 필요)
 - [{feature}] [항목] 권장 조치: ...
-```
+~~~
 
 ## 제약사항
 
 - 각 에이전트는 **500토큰 이내 요약**만 반환 (Context 폭발 방지)
 - feature당 수정 **최대 2회** (무한루프 방지)
 - Subagent는 1-level only (메인 대화가 orchestrator)
-- code-reviewer는 `flutter test`/`flutter analyze` 실행 안 함 (Judge가 전체 종료 시 최종 실행)
+- code-reviewer는 'flutter test'/'flutter analyze' 실행 안 함 (Judge가 전체 종료 시 최종 실행)
 - MCP 도구는 포그라운드 실행만 사용

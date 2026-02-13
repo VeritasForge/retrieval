@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 /// 복습 일정 엔티티
 class ReviewSchedule extends Equatable {
   final String id;
-  final String studyItemId;
+  final String taskId;
   final DateTime scheduledDate;
   final int reviewOrder;
   final bool isCompleted;
@@ -12,7 +12,7 @@ class ReviewSchedule extends Equatable {
 
   const ReviewSchedule({
     required this.id,
-    required this.studyItemId,
+    required this.taskId,
     required this.scheduledDate,
     required this.reviewOrder,
     required this.isCompleted,
@@ -23,14 +23,14 @@ class ReviewSchedule extends Equatable {
   /// 새 복습 일정 생성
   factory ReviewSchedule.create({
     required String id,
-    required String studyItemId,
+    required String taskId,
     required DateTime scheduledDate,
     required int reviewOrder,
     DateTime? createdAt,
   }) {
     return ReviewSchedule(
       id: id,
-      studyItemId: studyItemId,
+      taskId: taskId,
       scheduledDate: scheduledDate,
       reviewOrder: reviewOrder,
       isCompleted: false,
@@ -42,7 +42,7 @@ class ReviewSchedule extends Equatable {
   /// 복습 일정 복사 (변경 가능)
   ReviewSchedule copyWith({
     String? id,
-    String? studyItemId,
+    String? taskId,
     DateTime? scheduledDate,
     int? reviewOrder,
     bool? isCompleted,
@@ -51,7 +51,7 @@ class ReviewSchedule extends Equatable {
   }) {
     return ReviewSchedule(
       id: id ?? this.id,
-      studyItemId: studyItemId ?? this.studyItemId,
+      taskId: taskId ?? this.taskId,
       scheduledDate: scheduledDate ?? this.scheduledDate,
       reviewOrder: reviewOrder ?? this.reviewOrder,
       isCompleted: isCompleted ?? this.isCompleted,
@@ -72,7 +72,7 @@ class ReviewSchedule extends Equatable {
   ReviewSchedule uncomplete() {
     return ReviewSchedule(
       id: id,
-      studyItemId: studyItemId,
+      taskId: taskId,
       scheduledDate: scheduledDate,
       reviewOrder: reviewOrder,
       isCompleted: false,
@@ -84,7 +84,7 @@ class ReviewSchedule extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        studyItemId,
+        taskId,
         scheduledDate,
         reviewOrder,
         isCompleted,

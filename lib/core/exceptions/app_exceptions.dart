@@ -29,6 +29,16 @@ class StorageException extends AppException {
   const StorageException(super.message, {super.code});
 }
 
+/// 전략 관련 예외
+class StrategyException extends AppException {
+  const StrategyException(super.message, {super.code});
+}
+
+/// 태스크 관련 예외
+class TaskException extends AppException {
+  const TaskException(super.message, {super.code});
+}
+
 /// 유효성 검증 예외
 class ValidationException extends AppException {
   const ValidationException(super.message, {super.code});

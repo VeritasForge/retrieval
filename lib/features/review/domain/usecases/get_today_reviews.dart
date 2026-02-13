@@ -21,6 +21,16 @@ class GetPendingReviews {
   Future<List<ReviewSchedule>> call() async {
     final today = await repository.getTodaySchedules();
     final overdue = await repository.getOverdueSchedules();
-    return [...overdue, ...today];
+    final completedToday = await repository.getCompletedTodaySchedules();
+
+    // Deduplicate: completedToday may overlap with today schedules
+    final ids = <String>{
+      ...overdue.map((r) => r.id),
+      ...today.map((r) => r.id),
+    };
+    final uniqueCompletedToday =
+        completedToday.where((r) => !ids.contains(r.id));
+
+    return [...overdue, ...today, ...uniqueCompletedToday];
   }
 }

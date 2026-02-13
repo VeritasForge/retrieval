@@ -17,7 +17,12 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue(Category.create(id: 'fallback', name: 'fallback'));
+    registerFallbackValue(Category.create(
+      id: 'fallback',
+      name: 'fallback',
+      iconName: 'code',
+      colorHex: '000000',
+    ));
   });
 
   group('CreateCategory', () {
@@ -26,22 +31,25 @@ void main() {
         (invocation) async => invocation.positionalArguments[0] as Category,
       );
 
-      final result = await useCase('  알고리즘  ');
+      final result = await useCase('  알고리즘  ', 'code', '6366F1');
 
       expect(result.name, '알고리즘');
+      expect(result.iconName, 'code');
+      expect(result.colorHex, '6366F1');
       verify(() => mockRepository.create(any())).called(1);
     });
 
     test('should throw ValidationException for empty name', () async {
       expect(
-        () => useCase(''),
+        () => useCase('', 'code', '6366F1'),
         throwsA(isA<ValidationException>()),
       );
     });
 
-    test('should throw ValidationException for whitespace-only name', () async {
+    test('should throw ValidationException for whitespace-only name',
+        () async {
       expect(
-        () => useCase('   '),
+        () => useCase('   ', 'code', '6366F1'),
         throwsA(isA<ValidationException>()),
       );
     });
@@ -51,8 +59,8 @@ void main() {
         (invocation) async => invocation.positionalArguments[0] as Category,
       );
 
-      final result1 = await useCase('알고리즘');
-      final result2 = await useCase('수학');
+      final result1 = await useCase('알고리즘', 'code', '6366F1');
+      final result2 = await useCase('수학', 'school', 'F59E0B');
 
       expect(result1.id, isNotEmpty);
       expect(result2.id, isNotEmpty);

@@ -8,8 +8,8 @@ abstract class ReviewScheduleRepository {
   /// ID로 복습 일정 조회
   Future<ReviewSchedule?> getById(String id);
 
-  /// 학습 항목별 복습 일정 조회
-  Future<List<ReviewSchedule>> getByStudyItemId(String studyItemId);
+  /// 태스크별 복습 일정 조회
+  Future<List<ReviewSchedule>> getByTaskId(String taskId);
 
   /// 특정 날짜의 복습 일정 조회
   Future<List<ReviewSchedule>> getByDate(DateTime date);
@@ -23,6 +23,9 @@ abstract class ReviewScheduleRepository {
   /// 미완료 복습 일정 조회 (오늘 이전)
   Future<List<ReviewSchedule>> getOverdueSchedules();
 
+  /// 오늘 완료된 복습 일정 조회
+  Future<List<ReviewSchedule>> getCompletedTodaySchedules();
+
   /// 복습 일정 생성
   Future<ReviewSchedule> create(ReviewSchedule schedule);
 
@@ -35,6 +38,6 @@ abstract class ReviewScheduleRepository {
   /// 복습 일정 삭제
   Future<void> delete(String id);
 
-  /// 학습 항목의 모든 복습 일정 삭제
-  Future<void> deleteByStudyItemId(String studyItemId);
+  /// 태스크의 모든 복습 일정 삭제
+  Future<void> deleteByTaskId(String taskId);
 }

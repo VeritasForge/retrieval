@@ -1,31 +1,31 @@
 import 'package:hive/hive.dart';
 
-import '../models/category_model.dart';
+import '../models/category_model_v2.dart';
 
 abstract class CategoryLocalDataSource {
-  Future<List<CategoryModel>> getAll();
-  Future<CategoryModel?> getById(String id);
-  Future<void> save(CategoryModel category);
+  Future<List<CategoryModelV2>> getAll();
+  Future<CategoryModelV2?> getById(String id);
+  Future<void> save(CategoryModelV2 category);
   Future<void> delete(String id);
 }
 
 class CategoryLocalDataSourceImpl implements CategoryLocalDataSource {
-  final Box<CategoryModel> box;
+  final Box<CategoryModelV2> box;
 
   CategoryLocalDataSourceImpl({required this.box});
 
   @override
-  Future<List<CategoryModel>> getAll() async {
+  Future<List<CategoryModelV2>> getAll() async {
     return box.values.toList();
   }
 
   @override
-  Future<CategoryModel?> getById(String id) async {
+  Future<CategoryModelV2?> getById(String id) async {
     return box.get(id);
   }
 
   @override
-  Future<void> save(CategoryModel category) async {
+  Future<void> save(CategoryModelV2 category) async {
     await box.put(category.id, category);
   }
 

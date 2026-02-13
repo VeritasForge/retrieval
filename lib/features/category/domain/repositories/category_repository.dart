@@ -1,5 +1,4 @@
 import '../entities/category.dart';
-import '../entities/sub_category.dart';
 
 /// 카테고리 저장소 인터페이스
 abstract class CategoryRepository {
@@ -17,14 +16,4 @@ abstract class CategoryRepository {
 
   /// 카테고리 삭제
   Future<void> delete(String id);
-
-  /// 소분류 추가
-  Future<Category> addSubCategory(String categoryId, SubCategory subCategory);
-
-  /// 소분류 수정
-  Future<Category> updateSubCategory(
-      String categoryId, SubCategory subCategory);
-
-  /// 소분류 삭제
-  Future<Category> deleteSubCategory(String categoryId, String subCategoryId);
 }

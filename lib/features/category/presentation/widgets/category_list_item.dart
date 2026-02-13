@@ -21,13 +21,7 @@ class CategoryListItem extends StatelessWidget {
     return Card(
       child: ListTile(
         title: Text(category.name),
-        subtitle: category.subCategories.isNotEmpty
-            ? Text(
-                '소분류: ${category.subCategories.map((sc) => sc.name).join(', ')}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              )
-            : null,
+        subtitle: Text('${category.iconName} · #${category.colorHex}'),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
