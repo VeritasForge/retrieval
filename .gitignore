@@ -69,3 +69,8 @@ build/
 .history
 .svn/
 migrate_working_dir/
+
+# === Docs ===
+docs/demiurge/rl-verify/
+docs/superpowers/
+
