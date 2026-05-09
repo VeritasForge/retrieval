@@ -74,3 +74,5 @@ migrate_working_dir/
 docs/demiurge/rl-verify/
 docs/superpowers/
 
+# === Dump ===
+*.dump
