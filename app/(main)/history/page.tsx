@@ -1,17 +1,9 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { TaskCard } from "@/components/dashboard/task-card";
 import { formatDate } from "@/lib/utils";
-
-const RATING_LABELS: Record<number, string> = {
-  0: "😵 까먹음",
-  1: "😓 어려움",
-  2: "😊 괜찮음",
-  3: "😎 쉬움",
-};
 
 type HistoryItem = {
   review: {
@@ -21,9 +13,15 @@ type HistoryItem = {
     rating: number | null;
     completedAt: string;
   };
-  task: { id: string };
-  category: { name: string; colorHex: string };
-  strategy: { name: string; type: string };
+  task: {
+    id: string;
+    categoryId: string;
+    strategyId: string;
+    studyDate: string;
+    title: string;
+  };
+  category: { id: string; name: string; iconName: string | null; colorHex: string };
+  strategy: { id: string; name: string; type: "fixed" | "sm2" };
 };
 
 export default function HistoryPage() {
@@ -68,23 +66,23 @@ export default function HistoryPage() {
           </h2>
           <div className="space-y-2">
             {dateItems.map((item) => (
-              <Card key={item.review.id}>
-                <CardContent className="flex items-center gap-3 p-3">
-                  <div
-                    className="h-3 w-3 rounded-full"
-                    style={{ backgroundColor: `#${item.category.colorHex}` }}
-                  />
-                  <span className="flex-1 text-sm">{item.category.name}</span>
-                  <Badge variant="outline" className="text-xs">
-                    {item.strategy.name}
-                  </Badge>
-                  {item.review.rating !== null && (
-                    <span className="text-xs">
-                      {RATING_LABELS[item.review.rating]}
-                    </span>
-                  )}
-                </CardContent>
-              </Card>
+              <TaskCard
+                key={item.review.id}
+                mode="readonly"
+                reviewId={item.review.id}
+                taskId={item.task.id}
+                categoryId={item.task.categoryId}
+                categoryName={item.category.name}
+                categoryIcon={item.category.iconName ?? "book"}
+                categoryColor={item.category.colorHex}
+                strategyId={item.task.strategyId}
+                strategyName={item.strategy.name}
+                strategyType={item.strategy.type}
+                studyDate={item.task.studyDate}
+                title={item.task.title}
+                rating={item.review.rating}
+                onDelete={() => {}}
+              />
             ))}
           </div>
         </div>
