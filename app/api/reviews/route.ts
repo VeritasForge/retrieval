@@ -18,6 +18,7 @@ export async function GET() {
     .innerJoin(strategies, eq(tasks.strategyId, strategies.id))
     .where(and(
       eq(reviewSchedules.userId, userId),
+      eq(tasks.graduated, false),
       sql`(
         (${reviewSchedules.status} = 'pending' AND ${reviewSchedules.scheduledDate} <= ${todayStr})
         OR
@@ -27,7 +28,8 @@ export async function GET() {
 
   const todayReviews = result.filter((r) => r.review.status === "pending" && r.review.scheduledDate === todayStr);
   const overdueReviews = result.filter((r) => r.review.status === "pending" && r.review.scheduledDate < todayStr);
-  const completedToday = result.filter((r) => r.review.status === "completed");
+  // 오늘 예정이었던 review만 "완료" 섹션에 표시. overdue catch-up은 제외.
+  const completedToday = result.filter((r) => r.review.status === "completed" && r.review.scheduledDate === todayStr);
 
   const upcomingResult = await db
     .select({ review: reviewSchedules, task: tasks, category: categories, strategy: strategies })
@@ -37,6 +39,7 @@ export async function GET() {
     .innerJoin(strategies, eq(tasks.strategyId, strategies.id))
     .where(and(
       eq(reviewSchedules.userId, userId),
+      eq(tasks.graduated, false),
       eq(reviewSchedules.status, "pending"),
       sql`${reviewSchedules.scheduledDate} > ${todayStr}`,
       sql`${reviewSchedules.scheduledDate} <= ${todayStr}::date + interval '7 days'`

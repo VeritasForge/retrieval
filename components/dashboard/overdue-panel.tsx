@@ -22,12 +22,12 @@ type OverdueItem = {
 
 type OverduePanelProps = {
   reviews: OverdueItem[];
-  onReschedule: (reviewId: string) => void;
-  onSkip: (reviewId: string) => void;
+  onContinue: (reviewId: string) => void;
+  onReset: (reviewId: string) => void;
   onDelete: (taskId: string) => void;
 };
 
-export function OverduePanel({ reviews, onReschedule, onSkip, onDelete }: OverduePanelProps) {
+export function OverduePanel({ reviews, onContinue, onReset, onDelete }: OverduePanelProps) {
   if (reviews.length === 0) return null;
 
   return (
@@ -50,8 +50,8 @@ export function OverduePanel({ reviews, onReschedule, onSkip, onDelete }: Overdu
             title={item.task.title}
             daysLate={daysBetween(item.review.scheduledDate, today())}
             onDelete={onDelete}
-            onReschedule={onReschedule}
-            onSkip={onSkip}
+            onContinue={onContinue}
+            onReset={onReset}
           />
         ))}
       </div>

@@ -93,20 +93,19 @@ export default function DashboardPage() {
     fetchData();
   }
 
-  async function handleOverdueReschedule(reviewId: string) {
-    await fetch("/api/reviews/overdue", {
+  async function handleOverdueContinue(reviewId: string) {
+    await fetch(`/api/reviews/${reviewId}/complete`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ reviewIds: [reviewId], action: "reschedule" }),
+      body: JSON.stringify({}),
     });
     fetchData();
   }
 
-  async function handleOverdueSkip(reviewId: string) {
-    await fetch("/api/reviews/overdue", {
+  async function handleOverdueReset(reviewId: string) {
+    await fetch(`/api/reviews/${reviewId}/reset`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ reviewIds: [reviewId], action: "skip" }),
     });
     fetchData();
   }
@@ -140,8 +139,8 @@ export default function DashboardPage() {
       />
       <OverduePanel
         reviews={data.overdue}
-        onReschedule={handleOverdueReschedule}
-        onSkip={handleOverdueSkip}
+        onContinue={handleOverdueContinue}
+        onReset={handleOverdueReset}
         onDelete={handleDeleteTask}
       />
       <AddTaskModal

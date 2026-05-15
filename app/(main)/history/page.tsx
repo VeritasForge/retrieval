@@ -83,9 +83,6 @@ export default function HistoryPage() {
                       {RATING_LABELS[item.review.rating]}
                     </span>
                   )}
-                  {item.review.status === "skipped" && (
-                    <Badge variant="secondary" className="text-xs">건너뜀</Badge>
-                  )}
                 </CardContent>
               </Card>
             ))}

@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DifficultyRating } from "@/components/review/difficulty-rating";
-import { Check, Pencil, Trash2, RotateCcw, SkipForward } from "lucide-react";
+import { Check, Pencil, Trash2, RotateCcw } from "lucide-react";
 import { useUiStore } from "@/stores/ui-store";
 
 type CardMode = "today" | "completed" | "upcoming" | "overdue";
@@ -29,8 +29,8 @@ type TaskCardProps = {
   daysLate?: number;
   onComplete?: (reviewId: string, rating?: number) => void;
   onDelete: (taskId: string) => void;
-  onReschedule?: (reviewId: string) => void;
-  onSkip?: (reviewId: string) => void;
+  onContinue?: (reviewId: string) => void;
+  onReset?: (reviewId: string) => void;
 };
 
 export function TaskCard({
@@ -51,11 +51,12 @@ export function TaskCard({
   daysLate,
   onComplete,
   onDelete,
-  onReschedule,
-  onSkip,
+  onContinue,
+  onReset,
 }: TaskCardProps) {
   const openEditTaskModal = useUiStore((s) => s.openEditTaskModal);
   const [showRating, setShowRating] = useState(false);
+  const [continueDisabled, setContinueDisabled] = useState(false);
 
   function handleEdit() {
     openEditTaskModal({
@@ -79,6 +80,20 @@ export function TaskCard({
   function handleRatingSelect(rating: number) {
     onComplete?.(reviewId, rating);
     setShowRating(false);
+  }
+
+  function handleContinueClick() {
+    if (continueDisabled || !onContinue) return;
+    setContinueDisabled(true);
+    setTimeout(() => setContinueDisabled(false), 1000);
+    onContinue(reviewId);
+  }
+
+  function handleResetClick() {
+    if (!onReset) return;
+    if (confirm("학습 진도를 처음부터 다시 시작하시겠습니까? 이전 복습 기록은 보존됩니다.")) {
+      onReset(reviewId);
+    }
   }
 
   return (
@@ -124,16 +139,16 @@ export function TaskCard({
 
         {mode === "overdue" && (
           <div className="flex gap-2 mt-2">
-            {onReschedule && (
-              <Button size="sm" variant="outline" onClick={() => onReschedule(reviewId)}>
-                <RotateCcw className="h-3 w-3 mr-1" />
-                오늘로 이동
+            {onContinue && (
+              <Button size="sm" onClick={handleContinueClick} disabled={continueDisabled}>
+                <Check className="h-3 w-3 mr-1" />
+                계속
               </Button>
             )}
-            {onSkip && (
-              <Button size="sm" variant="ghost" onClick={() => onSkip(reviewId)}>
-                <SkipForward className="h-3 w-3 mr-1" />
-                건너뛰기
+            {onReset && strategyType === "fixed" && (
+              <Button size="sm" variant="outline" onClick={handleResetClick}>
+                <RotateCcw className="h-3 w-3 mr-1" />
+                다시 시작
               </Button>
             )}
           </div>

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { reviewSchedules, tasks, categories, strategies } from "@/db/schema";
-import { and, eq, desc, inArray } from "drizzle-orm";
+import { and, eq, desc } from "drizzle-orm";
 import { getAuthUserId, unauthorized } from "@/lib/auth-utils";
 
 export async function GET(request: Request) {
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     .where(
       and(
         eq(reviewSchedules.userId, userId),
-        inArray(reviewSchedules.status, ["completed", "skipped"])
+        eq(reviewSchedules.status, "completed")
       )
     )
     .orderBy(desc(reviewSchedules.completedAt))

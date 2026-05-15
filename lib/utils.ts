@@ -5,21 +5,43 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+const KST_FORMATTER = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Seoul",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+const KST_DISPLAY_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
+  timeZone: "Asia/Seoul",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+function dateStringToKstMillis(dateStr: string): number {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  // KST 자정(UTC+9) → UTC epoch ms
+  return Date.UTC(y, m - 1, d, -9, 0, 0, 0);
+}
+
+function kstMillisToDateString(ms: number): string {
+  return KST_FORMATTER.format(new Date(ms));
+}
+
 export function today(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return KST_FORMATTER.format(new Date());
 }
 
 export function addDays(dateStr: string, days: number): string {
-  const [y, m, d] = dateStr.split("-").map(Number);
-  const date = new Date(y, m - 1, d + days);
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  const base = dateStringToKstMillis(dateStr);
+  return kstMillisToDateString(base + days * 86400000);
 }
 
 export function daysBetween(from: string, to: string): number {
-  const a = new Date(from + "T00:00:00");
-  const b = new Date(to + "T00:00:00");
-  return Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24));
+  const a = dateStringToKstMillis(from);
+  const b = dateStringToKstMillis(to);
+  return Math.round((b - a) / 86400000);
 }
 
 export function isPast(dateStr: string): boolean {
@@ -27,10 +49,5 @@ export function isPast(dateStr: string): boolean {
 }
 
 export function formatDate(dateStr: string): string {
-  const date = new Date(dateStr + "T00:00:00");
-  return date.toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  return KST_DISPLAY_FORMATTER.format(new Date(dateStringToKstMillis(dateStr)));
 }
