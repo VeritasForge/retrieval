@@ -5,12 +5,29 @@ import Link from "next/link";
 import { DailyReviewsChart } from "@/components/statistics/daily-reviews-chart";
 import { CompletionRate } from "@/components/statistics/completion-rate";
 import { StreakCard } from "@/components/statistics/streak-card";
-import { Heatmap } from "@/components/statistics/heatmap";
+import { ContributionGraph } from "@/components/statistics/contribution-graph";
 import { CategoryPerformance } from "@/components/statistics/category-performance";
 import { GraduationStatus } from "@/components/statistics/graduation-status";
+import { today } from "@/lib/utils";
+import type { HeatmapDay } from "@/lib/heatmap-grid";
+
+type Stats = {
+  dailyCounts: { date: string; count: number }[];
+  completionRate: { total: number; completed: number };
+  streak: { current: number };
+  heatmap: HeatmapDay[];
+  availableYears: number[];
+  categoryPerformance: {
+    categoryName: string;
+    colorHex: string;
+    total: number;
+    completed: number;
+  }[];
+  graduation: { count: number };
+};
 
 export default function StatisticsPage() {
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
     fetch("/api/statistics")
@@ -21,6 +38,8 @@ export default function StatisticsPage() {
   if (!stats) {
     return <div className="animate-pulse">로딩 중...</div>;
   }
+
+  const todayISO = today();
 
   return (
     <div>
@@ -43,7 +62,11 @@ export default function StatisticsPage() {
 
       {/* 그룹 2: 장기 추세 */}
       <div className="space-y-4">
-        <Heatmap data={stats.heatmap} />
+        <ContributionGraph
+          data={stats.heatmap}
+          availableYears={stats.availableYears}
+          todayISO={todayISO}
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <CategoryPerformance data={stats.categoryPerformance} />
           <GraduationStatus count={stats.graduation.count} />
